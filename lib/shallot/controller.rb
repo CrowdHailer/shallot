@@ -33,6 +33,15 @@ module Shallot
       settings.routes
     end
 
+    def initialize(app)
+      @app = app
+    end
+
+    attr_reader :app
+
+    def call(env)
+      @app.call(env)
+    end
 
 
   end
