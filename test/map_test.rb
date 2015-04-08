@@ -10,7 +10,7 @@ class MapTest < MiniTest::Test
     mock = self.mock
     @app ||= Class.new(Shallot::Controller) do
       map '/foo', ->(env){ [200, {}, [FOO]] }
-      map '/bar', ->(env){ [200, {}, [BAR]] }
+      map '/bar', &->(env){ [200, {}, [BAR]] }
     end.new
   end
 
@@ -23,12 +23,12 @@ class MapTest < MiniTest::Test
     @mock = nil
   end
 
-  def test_calls_foo_branch
+  def test_calls_mapped_sub_app
     get '/foo'
     assert_equal FOO, last_response.body
   end
 
-  def test_calls_foo_branch
+  def test_calls_proc
     get '/bar'
     assert_equal BAR, last_response.body
   end

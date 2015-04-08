@@ -1,8 +1,8 @@
 module Shallot
   class Controller
     class << self
-      def map *args
-        mappings.push args
+      def map(path, sub_app=nil, &block)
+        mappings.push [path, sub_app || block]
       end
 
       def mappings
