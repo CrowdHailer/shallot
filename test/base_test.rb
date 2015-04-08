@@ -10,7 +10,7 @@ class BaseTest < MiniTest::Test
     }
   end
 
-  def test_root
-    get '/',{}
-  end
+  # def test_root
+  #   get '/',{}
+  # end
 end

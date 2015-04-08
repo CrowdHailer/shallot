@@ -1,14 +1,16 @@
 require_relative './test_config'
 
-class BaseTest < MiniTest::Test
+class DownstreamTest < MiniTest::Test
   include Rack::Test::Methods
+
+  OK_RESPONSE = [200, {}, ['Test']]
 
   def app
     @app ||= Class.new(Shallot::Controller).new(downstream)
   end
 
   def downstream
-    @downstream ||= ->(env){[200, {}, ['Test']]}
+    @downstream ||= ->(env){ OK_RESPONSE }
   end
 
   def teardown
@@ -16,9 +18,10 @@ class BaseTest < MiniTest::Test
     @downstream = nil
   end
 
-  def test_root
+  def test_returns_down_stream_response_if_no_matching_route
     get '/'
     assert last_response.ok?
+    assert_equal 'Test', last_response.body
   end
 
   def test_makes_app_available
