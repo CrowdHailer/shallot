@@ -1,5 +1,14 @@
 module Shallot
   class Controller
+    class << self
+      def map *args
+        mappings.push args
+      end
+
+      def mappings
+        @mappings ||= []
+      end
+    end
     # def self.http(*http_methods)
     #   ->(request){
     #     http_methods.include? request.request_method ? request : false
@@ -40,7 +49,14 @@ module Shallot
     attr_reader :app
 
     def call(env)
-      @app.call(env)
+      builder = Rack::Builder.new
+      self.class.mappings.each do |item|
+        builder.map item[0] do
+          run item[1]
+        end
+      end
+      builder.run app
+      builder.call(env)
     end
 
 
