@@ -14,9 +14,8 @@ class MapTest < MiniTest::Test
     end.new(downstream)
   end
 
-  # TODO remove when handles missing routes
   def downstream
-    @downstream ||= ->(env){ [200, {}, ['Test']] }
+    @downstream ||= ->(env){ [404, {}, ['Test']] }
   end
 
   def mock
@@ -37,5 +36,10 @@ class MapTest < MiniTest::Test
   def test_calls_foo_branch
     get '/bar'
     assert_equal BAR, last_response.body
+  end
+
+  def test_calls_through_when_no_mapping
+    get '/other'
+    assert_equal 404, last_response.status
   end
 end
