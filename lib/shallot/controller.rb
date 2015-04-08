@@ -40,7 +40,7 @@ module Shallot
     attr_reader :app
 
     def call(env)
-      @app.call(:a)
+      @app.call(env)
     end
 
 
