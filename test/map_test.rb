@@ -11,11 +11,7 @@ class MapTest < MiniTest::Test
     @app ||= Class.new(Shallot::Controller) do
       map '/foo', ->(env){ [200, {}, [FOO]] }
       map '/bar', ->(env){ [200, {}, [BAR]] }
-    end.new(downstream)
-  end
-
-  def downstream
-    @downstream ||= ->(env){ [404, {}, ['Test']] }
+    end.new
   end
 
   def mock
@@ -24,7 +20,6 @@ class MapTest < MiniTest::Test
 
   def teardown
     @app = nil
-    @downstream = nil
     @mock = nil
   end
 

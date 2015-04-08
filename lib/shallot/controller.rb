@@ -42,7 +42,7 @@ module Shallot
     #   settings.routes
     # end
 
-    def initialize(app)
+    def initialize(app = ->(env){ [404, {}, ['Not Found']] })
       @app = app
     end
 
