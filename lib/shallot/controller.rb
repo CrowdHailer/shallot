@@ -8,6 +8,14 @@ module Shallot
       def mappings
         @mappings ||= []
       end
+
+      def use(middleware)
+        middlewares.push middleware
+      end
+
+      def middlewares
+        @middleware ||= []
+      end
     end
 
     def initialize(app = ->(env){ [404, {}, ['Not Found']] })
@@ -22,6 +30,9 @@ module Shallot
         builder.map item[0] do
           run item[1]
         end
+      end
+      self.class.middlewares.each do |middleware|
+        builder.use middleware
       end
       builder.run app
       builder.call(env)
