@@ -37,4 +37,9 @@ class MapTest < MiniTest::Test
     get '/other'
     assert_equal 404, last_response.status
   end
+
+  # def test_builder
+  #   get '/other'
+  #   puts app.builder.to_app.instance_variable_get '@mapping'
+  # end
 end

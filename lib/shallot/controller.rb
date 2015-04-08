@@ -25,7 +25,6 @@ module Shallot
     attr_reader :app
 
     def call(env)
-      builder = Rack::Builder.new
       self.class.mappings.each do |item|
         builder.map item[0] do
           run item[1]
@@ -38,6 +37,8 @@ module Shallot
       builder.call(env)
     end
 
-
+    def builder
+      @builder ||= Rack::Builder.new
+    end
   end
 end
