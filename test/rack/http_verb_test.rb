@@ -3,11 +3,18 @@ require 'rack'
 
 module Rack
   class HttpVerbTest < MiniTest::Test
+    def test_returns_self_when_double_wrapped
+      get = HttpVerb.verb!('GET')
+      get2 = HttpVerb.verb!(get)
+      assert_equal get.object_id, get2.object_id
+    end
+
     def test_memory_of_verbs
       matcherA = HttpVerb.verb!('GET')
       matcherB = HttpVerb.verb!('GET')
       assert_equal matcherA.object_id, matcherB.object_id
     end
+
     def test_raises_error_for_unknown_method
       assert_raises Rack::HttpVerb::VerbUnknown do
         HttpVerb.verb!('TICKLE')
