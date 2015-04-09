@@ -3,7 +3,7 @@ require_relative '../test_config'
 module Shallot
   class RootMatcherTest < MiniTest::Test
     def root_matcher
-      @root_matcher ||= PathMatcher::RootPath
+      @root_matcher ||= PathMatchers::RootPath
     end
 
     def teardown
