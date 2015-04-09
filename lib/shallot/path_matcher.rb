@@ -42,7 +42,7 @@ module Shallot
       end
 
       def consumed
-        pre_match && pre_match + submission[matcher] + post_match[%r{^/?$}].to_s
+        pre_match && pre_match + submission[matcher]
       end
 
       def data
@@ -57,14 +57,6 @@ module Shallot
         data && data.post_match
       end
 
-      # def match?
-      #
-      #   # without_slash = matcher.match(%r{^/?}).post_match
-      #   # data = submission.match(%{#{without_slash}})
-      #   #
-      #   # data.pre_match[%r{^/?$}] && data.post_match[%r{^/?$}]
-      #   # submission == matcher[%r{^/?}]
-      # end
     end
 
     class RootPath < Abstract

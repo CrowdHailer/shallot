@@ -38,7 +38,7 @@ module Shallot
 
     def test_consumes_with_trailing_slash
       match = admin_matcher.new('admin/')
-      assert_equal 'admin/', match.consumed
+      assert_equal 'admin', match.consumed
     end
 
     def test_does_not_match_random_string
