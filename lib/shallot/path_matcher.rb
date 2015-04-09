@@ -38,11 +38,23 @@ module Shallot
       end
 
       def match?
-        !!consumed
+        !!consumed && !!data.post_match[%r{^/?$}]
       end
 
       def consumed
-        submission[matcher]
+        pre_match && pre_match + submission[matcher] + post_match[%r{^/?$}].to_s
+      end
+
+      def data
+        submission.match matcher
+      end
+
+      def pre_match
+        data && data.pre_match
+      end
+
+      def post_match
+        data && data.post_match
       end
 
       # def match?
