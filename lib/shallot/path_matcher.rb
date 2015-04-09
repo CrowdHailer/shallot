@@ -1,7 +1,13 @@
 module Shallot
   class PathMatcher
+    AbstractMatcherError = Class.new(StandardError)
     class Abstract
       class << self
+        def new(*args)
+          raise AbstractMatcherError if abstract?
+          super
+        end
+
         def abstract?
           !@matcher
         end

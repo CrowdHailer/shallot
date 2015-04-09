@@ -14,6 +14,16 @@ module Shallot
       assert PathMatcher::Abstract.abstract?
     end
 
+    def test_subclass_marked_abstract
+      assert Class.new(PathMatcher::Abstract).abstract?
+    end
+
+    def test_cannot_initialize_abstract_class
+      assert_raises PathMatcher::AbstractMatcherError do
+        PathMatcher::Abstract.new('/')
+      end
+    end
+
     def test_is_not_abstract_when_has_a_matcher
       root_matcher = PathMatcher::Abstract.for('/')
       refute root_matcher.abstract?
