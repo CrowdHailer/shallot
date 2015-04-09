@@ -31,20 +31,18 @@ module Shallot
     end
 
     attr_reader :app
+    attr_accessor :request, :response
+
+    def new(request, response)
+      clone.tap do |copy|
+        copy.request = request
+        copy.response = response
+      end
+    end
 
     def call(env)
-      self.class.mappings.each do |item|
-        builder.map item[0] do
-          run item[1]
-        end
-      end
-      self.class.middlewares.each do |middleware|
-        builder.use middleware
-      end
-      builder.run ->(env){
-        self.invoke(env)
-      }
-      builder.call(env)
+      new(Rack::Request.new(env), Rack::Response.new).respond
+
     end
 
     def invoke(env)
@@ -61,6 +59,13 @@ module Shallot
       end
     end
 
+    def respond
+      builder.run ->(env){
+        self.invoke(env)
+      }
+      builder.call(request.env)
+    end
+
     def routes
       self.class.routes
     end
@@ -70,7 +75,19 @@ module Shallot
     end
 
     def builder
-      @builder ||= Rack::Builder.new
+      @builder ||= setup(Rack::Builder.new)
+    end
+
+    def setup(builder)
+      self.class.mappings.each do |path, sub_app|
+        builder.map path do
+          run sub_app
+        end
+      end
+      self.class.middlewares.each do |middleware|
+        builder.use middleware
+      end
+      builder
     end
   end
 end
