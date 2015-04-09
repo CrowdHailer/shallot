@@ -37,12 +37,21 @@ module Shallot
         self.class.matcher
       end
 
-      def match?
-        without_slash = matcher.match(%r{^/?}).post_match
-        data = submission.match(%{#{without_slash}})
+      # def match?
+      #
+      #   # without_slash = matcher.match(%r{^/?}).post_match
+      #   # data = submission.match(%{#{without_slash}})
+      #   #
+      #   # data.pre_match[%r{^/?$}] && data.post_match[%r{^/?$}]
+      #   # submission == matcher[%r{^/?}]
+      # end
+    end
 
-        data.pre_match[%r{^/?$}] && data.post_match[%r{^/?$}]
-        # submission == matcher[%r{^/?}]
+    class RootPath < Abstract
+      self.matcher = %r{^/?$}
+
+      def match?
+        submission[matcher]
       end
     end
   end
