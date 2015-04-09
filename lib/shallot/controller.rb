@@ -49,17 +49,25 @@ module Shallot
 
     def invoke(env)
       if route = self.class.routes.first
-        instance_exec &route.last
-        response
+        condition = route.first
+        if condition == env['PATH_INFO']
+          instance_exec &route.last
+          response
+        else
+          app.call(env)
+        end
       else
         app.call(env)
       end
     end
 
+    def routes
+      self.class.routes
+    end
+
     def response
       @response ||= Rack::Response.new
     end
-
 
     def builder
       @builder ||= Rack::Builder.new

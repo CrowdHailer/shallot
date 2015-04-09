@@ -20,4 +20,9 @@ class RootTest < MiniTest::Test
     assert_equal 'hello', last_response.body
   end
 
+  def test_no_match_for_diffent_path
+    get '/random'
+    assert_equal 404, last_response.status
+  end
+
 end
