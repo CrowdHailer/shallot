@@ -23,8 +23,7 @@ module Shallot
 
     class << self
       def for(*request_methods)
-        request_methods = Collection.new(*request_methods)
-        fetch(request_methods, &method(:mount_matcher))
+        fetch(Collection.new(*request_methods), &method(:mount_matcher))
       end
 
       def mount_matcher(request_methods)
