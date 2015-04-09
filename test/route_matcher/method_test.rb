@@ -2,6 +2,26 @@ require_relative '../test_config'
 
 module Shallot
   class MethodMatchersTest < MiniTest::Test
+    # string matching
+    def test_matches_single_method
+      matcher = MethodMatcher.for('GET')
+      match = matcher.new('GET')
+      assert_equal true, match.match?
+    end
+
+    def test_fails_single_method
+      matcher = MethodMatcher.for('GET')
+      match = matcher.new('POST')
+      assert_equal false, match.match?
+    end
+
+    def test_makes_rack_request_method_available
+      matcher = MethodMatcher.for('GET')
+      match = matcher.new('GET')
+      assert_equal Rack::GET.object_id, match.request_method.object_id
+    end
+
+    # class generation
     def test_can_have_more_than_one_matcher
       matcherA = MethodMatcher.for('GET')
       matcherB = MethodMatcher.for('POST')

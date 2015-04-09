@@ -31,5 +31,15 @@ module Shallot
       attr_accessor :request_methods
     end
 
+    def initialize(request_method)
+      @request_method = METHODS.detect { |r_verb| 0 == request_method.to_s.casecmp(r_verb) }
+    end
+
+    attr_reader :request_method
+
+    def match?
+      self.class.request_methods.include? @request_method
+    end
+
   end
 end
