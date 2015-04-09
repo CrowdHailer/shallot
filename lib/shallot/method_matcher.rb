@@ -1,27 +1,46 @@
 require 'rack'
+require 'set'
 
 module Shallot
   class MethodMatcher
+    class Collection
+      def initialize(*verbs)
+        @set = Set.new(Array(verbs).map{|m| Rack::HttpVerb.verb! m }.sort_by{|x| Rack::HttpVerb::VERBS.index x.to_s})
+      end
+
+      def name
+        @set.to_a.join('_')
+      end
+
+      def to_a
+        @set.to_a
+      end
+
+      def include?(item)
+        @set.include?(item)
+      end
+    end
+
     class << self
       def for(*request_methods)
-        request_methods = request_methods.map{|m| Rack::HttpVerb.verb! m }
+        request_methods = Collection.new(*request_methods)
         fetch(request_methods, &method(:mount_matcher))
       end
 
-      def mount_matcher(request_methods, name)
-        const_set(name, build_matcher(request_methods, name))
+      def mount_matcher(request_methods)
+        const_set(request_methods.name, build_matcher(request_methods))
       end
 
-      def build_matcher(request_methods, name)
+      def build_matcher(request_methods)
         new_decendant.tap do |matcher|
           matcher.request_methods = request_methods
         end
       end
 
       def fetch(request_methods)
-        name = request_methods.join('_')
+        name = request_methods.name
         return const_get name if const_defined? name
-        yield request_methods, name
+        yield request_methods
       end
 
       def new_decendant

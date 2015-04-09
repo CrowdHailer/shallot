@@ -25,8 +25,8 @@ module Shallot
     def test_can_have_more_than_one_matcher
       matcherA = MethodMatcher.for('GET')
       matcherB = MethodMatcher.for('POST')
-      assert_equal ['GET'],  matcherA.request_methods
-      assert_equal ['POST'],  matcherB.request_methods
+      assert_equal ['GET'],  matcherA.request_methods.to_a
+      assert_equal ['POST'],  matcherB.request_methods.to_a
     end
 
     def test_sets_class_name_from_single_method
@@ -39,6 +39,11 @@ module Shallot
       assert_equal 'Shallot::MethodMatcher::GET_POST', matcher.name
     end
 
+    def test_sets_class_name_from_multiple_methods_reverse_order
+      matcher = MethodMatcher.for('POST', 'GET')
+      assert_equal 'Shallot::MethodMatcher::GET_POST', matcher.name
+    end
+
     def test_memoizes_generated_clases
       matcherA = MethodMatcher.for('GET')
       matcherB = MethodMatcher.for('GET')
@@ -48,12 +53,12 @@ module Shallot
     # Setting methods
     def test_can_have_single_method
       matcher = MethodMatcher.for('GET')
-      assert_equal ['GET'], matcher.request_methods
+      assert_equal ['GET'], matcher.request_methods.to_a
     end
 
     def test_can_have_multiple_methods
       matcher = MethodMatcher.for('GET', 'POST')
-      assert_equal ['GET', 'POST'], matcher.request_methods
+      assert_equal ['GET', 'POST'], matcher.request_methods.to_a
     end
 
   end
