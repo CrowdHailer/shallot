@@ -11,7 +11,7 @@ module Shallot
 
     def test_sets_class_name
       matcher = MethodMatcher.for(request_methods: 'GET')
-      assert_equal 'GET', matcher.name
+      assert_equal 'Shallot::MethodMatcher::GET', matcher.name
     end
 
     # Setting methods

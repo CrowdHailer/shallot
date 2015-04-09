@@ -21,6 +21,7 @@ module Shallot
           METHODS.detect { |r_verb| 0 == verb.to_s.casecmp(r_verb) }
         end
         copy = Class.new(self)
+        self.const_set request_methods.first, copy
         copy.request_methods = request_methods
         copy
       end
