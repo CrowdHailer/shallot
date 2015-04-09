@@ -15,10 +15,10 @@ module Shallot
       assert_equal false, match.match?
     end
 
-    def test_makes_rack_request_method_available
+    def test_makes_rack_requested_method_available
       matcher = MethodMatcher.for('GET')
       match = matcher.new('GET')
-      assert_equal Rack::GET.object_id, match.request_method.object_id
+      assert_equal Rack::GET.object_id, match.requested_method.object_id
     end
 
     def test_raises_error_for_unknown_method_matched
@@ -51,7 +51,7 @@ module Shallot
     end
 
     def test_sets_class_name_from_multiple_methods
-      matcher = MethodMatcher.for(['GET', 'POST'])
+      matcher = MethodMatcher.for('GET', 'POST')
       assert_equal 'Shallot::MethodMatcher::GET_POST', matcher.name
     end
 
@@ -82,7 +82,7 @@ module Shallot
     end
 
     def test_can_have_multiple_methods
-      matcher = MethodMatcher.for(['GET', 'POST'])
+      matcher = MethodMatcher.for('GET', 'POST')
       assert_equal ['GET', 'POST'], matcher.request_methods
     end
 
