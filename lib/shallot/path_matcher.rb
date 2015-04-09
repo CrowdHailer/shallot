@@ -20,6 +20,16 @@ module Shallot
           end
         end
       end
+
+      def initialize(submission)
+        @submission = submission
+      end
+
+      attr_reader :submission
+
+      def match?
+        true
+      end
     end
   end
 end
