@@ -1,6 +1,7 @@
 require 'rack'
 
 module Shallot
+  HTTPMethodUnknown = Class.new(StandardError)
   class MethodMatcher
     METHODS = [
       Rack::GET,
@@ -18,7 +19,7 @@ module Shallot
       def for(request_methods)
         inputs = Array request_methods
         request_methods = inputs.map do |verb|
-          METHODS.detect { |r_verb| 0 == verb.to_s.casecmp(r_verb) }
+          METHODS.detect { |r_verb| 0 == verb.to_s.casecmp(r_verb) } or raise HTTPMethodUnknown, "HTTP method '#{verb}' not recognised"
         end
         name = request_methods.join('_')
         return self.const_get name if self.const_defined? name
@@ -32,7 +33,7 @@ module Shallot
     end
 
     def initialize(request_method)
-      @request_method = METHODS.detect { |r_verb| 0 == request_method.to_s.casecmp(r_verb) }
+      @request_method = METHODS.detect { |r_verb| 0 == request_method.to_s.casecmp(r_verb) } or raise HTTPMethodUnknown, "HTTP method '#{request_method}' not recognised"
     end
 
     attr_reader :request_method

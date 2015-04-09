@@ -21,6 +21,22 @@ module Shallot
       assert_equal Rack::GET.object_id, match.request_method.object_id
     end
 
+    def test_raises_error_for_unknown_method_matched
+      assert_raises Shallot::HTTPMethodUnknown do
+        matcher = MethodMatcher.for('GET')
+        match = matcher.new('TICKLE')
+      end
+    end
+
+    def test_include_method_name_in_error_message_matched
+      begin
+        matcher = MethodMatcher.for('GET')
+        match = matcher.new('TICKLE')
+      rescue Shallot::HTTPMethodUnknown => err
+        assert_includes err.message, 'TICKLE'
+      end
+    end
+
     # class generation
     def test_can_have_more_than_one_matcher
       matcherA = MethodMatcher.for('GET')
@@ -37,6 +53,20 @@ module Shallot
     def test_sets_class_name_from_multiple_methods
       matcher = MethodMatcher.for(['GET', 'POST'])
       assert_equal 'Shallot::MethodMatcher::GET_POST', matcher.name
+    end
+
+    def test_raises_error_for_unknown_method
+      assert_raises Shallot::HTTPMethodUnknown do
+        matcher = MethodMatcher.for('TICKLE')
+      end
+    end
+
+    def test_include_method_name_in_error_message
+      begin
+        matcher = MethodMatcher.for('TICKLE')
+      rescue Shallot::HTTPMethodUnknown => err
+        assert_includes err.message, 'TICKLE'
+      end
     end
 
     def test_memoizes_generated_clases
