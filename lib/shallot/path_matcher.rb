@@ -37,6 +37,14 @@ module Shallot
         self.class.matcher
       end
 
+      def match?
+        !!consumed
+      end
+
+      def consumed
+        submission[matcher]
+      end
+
       # def match?
       #
       #   # without_slash = matcher.match(%r{^/?}).post_match
