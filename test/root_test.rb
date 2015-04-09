@@ -6,7 +6,7 @@ class RootTest < MiniTest::Test
   def app
     @app ||= Class.new(Shallot::Controller) do
       get '/' do
-        response << 'hello'
+        response.body << 'hello'
       end
     end.new
   end
@@ -16,7 +16,6 @@ class RootTest < MiniTest::Test
   end
 
   def test_returns_root_content
-    skip
     get '/'
     assert_equal 'hello', last_response.body
   end
