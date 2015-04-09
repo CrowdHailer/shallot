@@ -20,8 +20,10 @@ module Shallot
         request_methods = inputs.map do |verb|
           METHODS.detect { |r_verb| 0 == verb.to_s.casecmp(r_verb) }
         end
+        name = request_methods.join('_')
+        return self.const_get name if self.const_defined? name
         copy = Class.new(self)
-        self.const_set request_methods.first, copy
+        self.const_set name, copy
         copy.request_methods = request_methods
         copy
       end

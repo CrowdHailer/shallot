@@ -9,9 +9,20 @@ module Shallot
       assert_equal ['POST'],  matcherB.request_methods
     end
 
-    def test_sets_class_name
+    def test_sets_class_name_from_single_method
       matcher = MethodMatcher.for(request_methods: 'GET')
       assert_equal 'Shallot::MethodMatcher::GET', matcher.name
+    end
+
+    def test_sets_class_name_from_multiple_methods
+      matcher = MethodMatcher.for(request_methods: ['GET', 'POST'])
+      assert_equal 'Shallot::MethodMatcher::GET_POST', matcher.name
+    end
+
+    def test_memoizes_generated_clases
+      matcherA = MethodMatcher.for(request_methods: 'GET')
+      matcherB = MethodMatcher.for(request_methods: 'GET')
+      assert_equal matcherA, matcherB
     end
 
     # Setting methods
