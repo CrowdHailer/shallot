@@ -61,14 +61,6 @@ module Shallot
 
     class RootPath < Abstract
       self.matcher = %r{^/?$}
-
-      def match?
-        !!consumed
-      end
-
-      def consumed
-        submission[matcher]
-      end
     end
   end
 end
