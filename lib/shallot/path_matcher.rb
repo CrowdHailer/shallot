@@ -33,8 +33,16 @@ module Shallot
 
       attr_reader :submission
 
+      def matcher
+        self.class.matcher
+      end
+
       def match?
-        true
+        without_slash = matcher.match(%r{^/?}).post_match
+        data = submission.match(%{#{without_slash}})
+
+        data.pre_match[%r{^/?$}] && data.post_match[%r{^/?$}]
+        # submission == matcher[%r{^/?}]
       end
     end
   end
