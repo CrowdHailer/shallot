@@ -1,7 +1,7 @@
 require 'rack'
 
 module Shallot
-  class RouteMatcher
+  class MethodMatcher
     METHODS = [
       Rack::GET,
       Rack::POST,
