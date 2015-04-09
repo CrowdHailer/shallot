@@ -51,6 +51,10 @@ module Shallot
       self.matcher = %r{^/?$}
 
       def match?
+        !!consumed
+      end
+
+      def consumed
         submission[matcher]
       end
     end
