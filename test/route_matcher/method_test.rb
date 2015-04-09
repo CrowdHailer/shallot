@@ -2,6 +2,14 @@ require_relative '../test_config'
 
 module Shallot
   class MethodMatchersTest < MiniTest::Test
+    def test_can_have_more_than_one_matcher
+      matcherA = RouteMatcher.for(request_methods: 'GET')
+      matcherB = RouteMatcher.for(request_methods: 'POST')
+      assert_equal ['GET'],  matcherA.request_methods
+      assert_equal ['POST'],  matcherB.request_methods
+    end
+
+    # Setting methods
     def test_can_have_single_method
       matcher = RouteMatcher.for(request_methods: 'GET')
       assert_equal ['GET'], matcher.request_methods

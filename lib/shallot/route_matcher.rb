@@ -17,13 +17,15 @@ module Shallot
     class << self
       def for(request_methods:)
         inputs = Array request_methods
-        @request_methods = inputs.map do |verb|
+        request_methods = inputs.map do |verb|
           METHODS.detect { |r_verb| 0 == verb.to_s.casecmp(r_verb) }
         end
-        self
+        copy = Class.new(self)
+        copy.request_methods = request_methods
+        copy
       end
 
-      attr_reader :request_methods
+      attr_accessor :request_methods
     end
 
   end
