@@ -20,7 +20,12 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+## Ideas
+- :sybolm matchers to expand to regex
+- captures passed
+- mapping controllers, using builder
+- as middleware
+- auto 405s etc
 
 ## Contributing
 
